@@ -1,0 +1,57 @@
+﻿@page
+@model WebAppTest.Pages.ProductSearchModel
+@{
+    ViewData["Title"] = "Product Filter";
+}
+
+<form method="post">
+    <label for="productId">Enter Product ID:</label>
+    <input type="number" id="ProductId" name="productId" required />
+    <button type="submit">Search</button>
+</form>
+@if (Model.Product != null)
+{
+    <h1 class="display-4">Product with Id : Model.Product.id</h1>
+    <table class="table">
+        <thead>
+            <tr>
+                <td class="col">Product Name</td>
+                <td class="col">Product Brand Name</td>
+                <td class="col">Category</td>
+                <td class="col">Qte</td>
+            </tr>
+        </thead>
+        <tr>
+            <td>
+                @Model.Product.ProductId
+            </td>
+            <td>
+                @Model.Product.Brand.BrandName
+            </td>
+            <td>
+                @Model.Product.Category.CategoryName
+            </td>
+            <td>
+                @{
+                    if (@Model.Product.Stocks.Any())
+                    {
+                        @Model.Product.Stocks.Sum(s => s.Quantity)
+                    }
+                    else
+                    {
+                        <span>Non Dispo</span>
+                    }
+
+                }
+
+
+
+            </td>
+            </tr>
+
+    </table>
+}
+else
+{
+    <h2 class="display-4">product Not Found</h2>
+}

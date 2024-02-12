@@ -1,0 +1,90 @@
+﻿@page
+@model WebAppTest.Pages.ProduitModel
+@{
+    ViewData["Title"] = "Gestion Produits";
+}
+<div class="text-center">
+    @Model.Products.Count()
+
+
+    <h1 class="display-4">List des produits</h1>
+    <table class="table">
+        <thead>
+            <tr>
+                <td class="col">Product Name</td>
+                <td class="col">Product Brand Name</td>
+                <td class="col">Category</td>
+                <td class="col">Qte</td>
+                <td class="col">Nb Orders</td>
+                <td class="col">Ordered Qte</td>
+                <td colspan="3">Stores Qte</td>
+
+            </tr>
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                @foreach(var st in Model.Stores)
+                {
+                    <td>@st.StoreName</td>
+                }
+                
+
+            </tr>
+
+        </thead>
+        @foreach (var po in Model.Products)
+        {
+            
+
+           <tr>
+               <td>
+                   @po.ProductName
+               </td>
+               <td>
+                   @po.Brand.BrandName
+               </td>
+               <td>
+                   @po.Category.CategoryName
+               </td>
+                <td>@{
+                        if (@po.Stocks.Any())
+                        {
+                            @po.Stocks.Sum(s => s.Quantity)
+                        }
+                        else
+                        {
+                            <span>Non Dispo</span>
+                        }
+
+                        }
+                        
+                    
+
+               </td>
+               <td>
+                   @po.OrderItems.Count(oi => oi.ProductId == po.ProductId)
+               </td>
+              
+               <td>
+                    @po.OrderItems.Sum(oi => oi.Quantity)
+               </td>
+
+                @foreach(var stock in po.Stocks)
+                {
+                    <td>
+                       @stock.Quantity
+                    </td>
+                }
+                
+
+
+           </tr>
+
+        }
+    </table>
+
+</div>
